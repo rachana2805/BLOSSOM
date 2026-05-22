@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blossom Database: ER Diagram Drawing</title>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ 
+          startOnLoad: true,
+          theme: 'base',
+          themeVariables: {
+              primaryColor: '#e0f2fe',
+              primaryTextColor: '#0f172a',
+              primaryBorderColor: '#0284c7',
+              lineColor: '#334155',
+              secondaryColor: '#f8fafc',
+              tertiaryColor: '#f1f5f9'
+          }
+      });
+    </script>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 20px; 
+            background-color: #f0f4f8; 
+            margin: 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h2 { 
+            color: #1e293b; 
+            font-weight: 700; 
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        .instructions { 
+            color: #334155; 
+            background: #e2e8f0; 
+            padding: 12px 24px; 
+            border-left: 5px solid #0ea5e9; 
+            margin-bottom: 25px; 
+            border-radius: 6px;
+            font-size: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .card { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
+            width: 95vw;
+            max-width: 1400px;
+            overflow: auto; 
+            display: flex;
+            justify-content: center;
+        }
+        .mermaid {
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h2>Blossom System ER Diagram (Crow's Foot Notation)</h2>
+    </div>
+    <div class="instructions">
+        <strong>Accurate Project Database Schema:</strong> This diagram precisely reflects the current tables, attributes, and relationships. <br>
+        <strong>How to save as Image:</strong> Right-click anywhere on the diagram below and select <strong>"Save Image As..."</strong> or take a screenshot!
+    </div>
+
+    <div class="card">
+        <div class="mermaid">
+erDiagram
+    USERS ||--o{ ORDERS : "places"
+    ORDERS ||--|{ ORDER_ITEMS : "contains"
+    ORDERS ||--o{ PAYMENTS : "paid via"
+    ITEMS |o--o{ ORDERS : "customized in"
+
+    USERS {
+        int id PK
+        varchar name
+        varchar email
+        varchar password "min 6 chars"
+        varchar role
+    }
+    PRODUCTS {
+        int id PK
+        varchar name
+        varchar category
+        decimal price
+        varchar image
+        int stock
+        varchar status
+    }
+    ITEMS {
+        int id PK
+        varchar name
+        decimal price
+        varchar category
+        text description
+        text customization_details
+        int stock
+        varchar status
+    }
+    CART {
+        int id PK
+        varchar product
+        decimal price
+        int quantity
+        varchar ribbon
+        varchar wrap
+        text message
+        text items_json
+        varchar wrapping_type
+    }
+    ORDERS {
+        int id PK
+        int user_id FK "References Users"
+        varchar order_id UK "Unique string ID"
+        int item_id FK "References Items (optional)"
+        varchar item_type
+        varchar Customer
+        varchar email
+        varchar phone
+        text address
+        decimal amount
+        varchar payment_method
+        varchar bouquet_type
+        varchar wrapping_type
+        text items_json
+        text custom_message
+        varchar order_status
+        datetime delivery_time
+        timestamp created_at
+    }
+    ORDER_ITEMS {
+        int id PK
+        int order_id FK "References Orders(id)"
+        varchar product_name
+        decimal price
+        int quantity
+        varchar ribbon
+        varchar wrap
+        text message
+    }
+    PAYMENTS {
+        int id PK
+        varchar order_id FK "References Orders(order_id)"
+        decimal amount
+        varchar status
+    }
+        </div>
+    </div>
+
+</body>
+</html>
